@@ -1,0 +1,35 @@
+<div class="max-w-md mx-auto bg-white p-8 rounded shadow mt-12">
+  <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">
+    🔐 Enter the OTP sent to your email
+  </h2>
+
+  <%= form_with url: otp_verify_path, method: :post, local: true, html: { class: "space-y-6" } do |f| %>
+    <%= hidden_field_tag :user_id, @user.id %>
+
+    <!-- OTP Code Field -->
+    <div>
+      <%= label_tag :otp_code, "OTP Code", class: "block text-sm font-medium text-gray-700" %>
+      <%= text_field_tag :otp_code, nil,
+          class: "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" %>
+    </div>
+
+    <!-- Submit Button -->
+    <div>
+      <%= submit_tag "✅ Verify OTP",
+          class: "w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+    </div>
+  <% end %>
+
+  <% if flash[:alert] %>
+    <div class="text-red-600 mt-4 text-sm text-center bg-red-50 border border-red-200 rounded px-4 py-2">
+      <%= flash[:alert] %>
+    </div>
+  <% end %>
+
+  <!-- Resend OTP Link -->
+  <p class="text-sm text-gray-500 mt-6 text-center">
+    Didn't receive the code?
+    <%= link_to "Resend OTP", resend_otp_path(user_id: @user.id, context: @context),
+        class: "text-blue-600 hover:underline font-medium" %>
+  </p>
+</div>

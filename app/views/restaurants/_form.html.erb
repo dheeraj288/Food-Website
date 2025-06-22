@@ -1,0 +1,25 @@
+<%= form_with model: @restaurant, local: true, class: "max-w-2xl mx-auto bg-white p-6 rounded-xl shadow-md space-y-4" do |form| %>
+  <div>
+    <%= form.label :name, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_field :name, class: "mt-1 block w-full border border-gray-300 rounded-lg p-2" %>
+  </div>
+
+  <div>
+    <%= form.label :description, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_area :description, class: "mt-1 block w-full border border-gray-300 rounded-lg p-2", rows: 4 %>
+  </div>
+
+  <div>
+    <%= form.label :location, class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_field :location, class: "mt-1 block w-full border border-gray-300 rounded-lg p-2" %>
+  </div>
+
+  <div>
+    <%= form.label :image_url, "Image URL", class: "block text-sm font-medium text-gray-700" %>
+    <%= form.text_field :image_url, class: "mt-1 block w-full border border-gray-300 rounded-lg p-2" %>
+  </div>
+
+  <div class="text-right">
+    <%= form.submit class: "bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg" %>
+  </div>
+<% end %>

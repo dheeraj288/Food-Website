@@ -1,0 +1,8 @@
+
+<h2>Welcome, <%= @user.email %>!</h2>
+<p>Here is your One Time Password (OTP) to verify your account:</p>
+
+<h3 style="color: #1a73e8;"><%= @otp.otp_code %></h3>
+
+<p>This OTP is valid for 10 minutes.</p>
+<p>Thanks for using our app!</p>

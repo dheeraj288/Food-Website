@@ -1,0 +1,27 @@
+<!-- app/views/carts/show.html.erb -->
+<h2 class="text-2xl font-bold mb-4">🛒 Your Cart</h2>
+
+<% if @cart_items.any? %>
+  <table class="w-full border">
+    <tr>
+      <th>Item</th><th>Qty</th><th>Price</th><th>Actions</th>
+    </tr>
+    <% @cart_items.each do |ci| %>
+      <tr>
+        <td><%= ci.menu_item.name %></td>
+        <td>
+          <%= form_with url: cart_item_path(ci), method: :patch, local: true do |f| %>
+            <%= f.number_field :quantity, value: ci.quantity, min: 1 %>
+            <%= f.submit "Update" %>
+          <% end %>
+        </td>
+        <td>₹<%= ci.menu_item.price * ci.quantity %></td>
+        <td><%= link_to "Remove", cart_item_path(ci), method: :delete, data: { confirm: "Remove this item?" } %></td>
+      </tr>
+    <% end %>
+  </table>
+  <br>
+  <%= button_to "Place Order", orders_path, method: :post, class: "bg-green-600 px-4 py-2 rounded text-white" %>
+<% else %>
+  <p>Your cart is empty.</p>
+<% end %>

@@ -1,0 +1,51 @@
+<!-- app/views/dashboards/admin.html.erb -->
+<div class="bg-white p-6 rounded shadow">
+  <h1 class="text-2xl font-bold text-indigo-700 mb-4">👨‍💼 Welcome, Admin</h1>
+  <p class="text-gray-600 mb-6">Manage the BiharBhojan platform from this dashboard.</p>
+
+  <!-- Admin Controls Grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    
+    <!-- Restaurants -->
+    <div class="bg-indigo-50 p-4 rounded shadow hover:bg-indigo-100 transition">
+      <h2 class="text-lg font-semibold text-indigo-700 mb-1">🍽 Restaurants</h2>
+      <p class="text-sm text-gray-600">Approve or remove restaurant listings.</p>
+      <%= link_to "Manage Restaurants" , class: "text-indigo-600 hover:underline text-sm mt-2 inline-block" %>
+    </div>
+
+    <!-- Users -->
+    <div class="bg-green-50 p-4 rounded shadow hover:bg-green-100 transition">
+      <h2 class="text-lg font-semibold text-green-700 mb-1">🧑‍🤝‍🧑 Users</h2>
+      <p class="text-sm text-gray-600">View or block customers & owners.</p>
+      <%= link_to "User Directory",  class: "text-green-600 hover:underline text-sm mt-2 inline-block" %>
+    </div>
+
+    <!-- Orders -->
+    <div class="bg-yellow-50 p-4 rounded shadow hover:bg-yellow-100 transition">
+      <h2 class="text-lg font-semibold text-yellow-700 mb-1">📦 Orders</h2>
+      <p class="text-sm text-gray-600">Track all incoming and completed orders.</p>
+      <%= link_to "View Orders",  class: "text-yellow-600 hover:underline text-sm mt-2 inline-block" %>
+    </div>
+
+    <!-- Reviews -->
+    <div class="bg-red-50 p-4 rounded shadow hover:bg-red-100 transition">
+      <h2 class="text-lg font-semibold text-red-700 mb-1">💬 Reviews</h2>
+      <p class="text-sm text-gray-600">Monitor restaurant reviews and ratings.</p>
+      <%= link_to "Check Reviews",  class: "text-red-600 hover:underline text-sm mt-2 inline-block" %>
+    </div>
+
+    <!-- Analytics -->
+    <div class="bg-blue-50 p-4 rounded shadow hover:bg-blue-100 transition">
+      <h2 class="text-lg font-semibold text-blue-700 mb-1">📊 Analytics</h2>
+      <p class="text-sm text-gray-600">Revenue, orders, user growth insights.</p>
+      <%= link_to "View Analytics",  class: "text-blue-600 hover:underline text-sm mt-2 inline-block" %>
+    </div>
+
+    <!-- Settings -->
+    <div class="bg-gray-100 p-4 rounded shadow hover:bg-gray-200 transition">
+      <h2 class="text-lg font-semibold text-gray-700 mb-1">⚙️ Settings</h2>
+      <p class="text-sm text-gray-600">Update platform settings and preferences.</p>
+      <%= link_to "Platform Settings",  class: "text-gray-800 hover:underline text-sm mt-2 inline-block" %>
+    </div>
+  </div>
+</div>
