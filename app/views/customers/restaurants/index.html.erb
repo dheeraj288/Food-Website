@@ -1,0 +1,86 @@
+<div class="max-w-7xl mx-auto px-4 py-8">
+
+  <!-- Add New Button -->
+  <div class="flex justify-end mb-6">
+    <%= link_to "Add New", new_restaurant_path, class: "bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg shadow-md transition" %>
+  </div>
+
+  <!-- Page Title -->
+  <h1 class="text-3xl font-extrabold mb-8 text-gray-900 tracking-wide">🍽️ Explore Restaurants</h1>
+
+  <!-- Filter / Search Form -->
+  <%= form_with url: restaurants_path, method: :get, local: true, class: "bg-white p-6 rounded-xl shadow-lg grid grid-cols-1 md:grid-cols-5 gap-5 mb-10" do %>
+    
+    <input 
+      type="text" 
+      name="search" 
+      placeholder="🔍 Search by name" 
+      value="<%= params[:search] %>" 
+      class="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition w-full"
+    />
+    
+    <input 
+      type="text" 
+      name="location" 
+      placeholder="📍 Location" 
+      value="<%= params[:location] %>" 
+      class="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition w-full"
+    />
+
+    <select 
+      name="category" 
+      class="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition w-full"
+    >
+      <option value="">🍽️ All Categories</option>
+      
+    </select>
+
+    <div class="flex space-x-3">
+      <input 
+        type="number" 
+        name="min_price" 
+        placeholder="₹ Min" 
+        value="<%= params[:min_price] %>" 
+        class="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition w-full"
+      />
+      <input 
+        type="number" 
+        name="max_price" 
+        placeholder="₹ Max" 
+        value="<%= params[:max_price] %>" 
+        class="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition w-full"
+      />
+    </div>
+
+    <%= submit_tag "🔍 Filter", class: "md:col-span-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg px-6 py-3 shadow-md transition" %>
+  <% end %>
+
+  <!-- Restaurants Grid -->
+  <% if @restaurants.any? %>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <% @restaurants.each do |restaurant| %>
+        <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition overflow-hidden">
+          <% if restaurant.image_url.present? %>
+            <%= image_tag restaurant.image_url, alt: restaurant.name, class: "h-52 w-full object-cover transition-transform duration-300 hover:scale-105" %>
+          <% else %>
+            <div class="h-52 w-full bg-gray-200 flex items-center justify-center text-gray-400 text-xl">
+              🍽️ No Image
+            </div>
+          <% end %>
+          <div class="p-5">
+            <h2 class="text-xl font-semibold text-gray-900 truncate"><%= restaurant.name %></h2>
+            <p class="text-gray-600 mt-2 line-clamp-3"><%= truncate(restaurant.description, length: 120) %></p>
+            <p class="text-sm text-gray-500 mt-1 flex items-center gap-1">📍 <span><%= restaurant.location %></span></p>
+            <div class="mt-5 flex justify-between items-center">
+              <%= link_to "View Details", customers_restaurant_path(restaurant), class: "text-indigo-600 font-semibold hover:underline" %>
+              
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-center text-gray-500 mt-20 text-lg">No restaurants found matching your criteria.</p>
+  <% end %>
+
+</div>

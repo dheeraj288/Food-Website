@@ -21,10 +21,22 @@
       <span class="text-lg">🏪</span><span>My Restaurants</span>
     <% end %>
 
+    <%= link_to orders_path, class: "flex items-center gap-3 px-4 py-2 rounded-lg text-green-600 hover:bg-green-50 transition" do %>
+      <span class="text-lg">🧾</span><span>Orders</span>
+    <% end %>
+
   <!-- Customer Section -->
   <% elsif customer_user? %>
     <%= link_to customer_dashboard_path, class: "flex items-center gap-3 px-4 py-2 rounded-lg bg-purple-50 text-purple-700 hover:bg-purple-100 transition font-medium" do %>
       <span class="text-lg">🛒</span><span>Customer Dashboard</span>
+    <% end %>
+
+    <%= link_to customers_restaurants_path, class: "flex items-center gap-3 px-4 py-2 rounded-lg text-green-600 hover:bg-green-50 transition" do %>
+      <span class="text-lg">🏪</span><span>My Restaurants</span>
+    <% end %>
+
+    <%= link_to orders_path, class: "flex items-center gap-3 px-4 py-2 rounded-lg text-green-600 hover:bg-green-50 transition" do %>
+      <span class="text-lg">🧾</span><span>Orders</span>
     <% end %>
   <% end %>
 </aside>

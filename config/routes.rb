@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  namespace :customers do
+    get 'restaurants/index'
+    get 'restaurants/show'
+  end
   root 'home#index'
   devise_for :users, controllers: {
               sessions: 'users/sessions',
@@ -22,6 +26,11 @@ end
 resource :cart, only: [:show]
 resources :cart_items, only: [:create, :update, :destroy]
 resources :orders, only: [:index, :show, :create]
+
+namespace :customers do
+  resources :restaurants, only: [:index, :show]
+end
+
 
 
 

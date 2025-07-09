@@ -1,27 +1,47 @@
-<!-- app/views/carts/show.html.erb -->
-<h2 class="text-2xl font-bold mb-4">🛒 Your Cart</h2>
+<h2 class="text-3xl font-bold mb-6 text-gray-800">🛒 Your Cart</h2>
 
 <% if @cart_items.any? %>
-  <table class="w-full border">
-    <tr>
-      <th>Item</th><th>Qty</th><th>Price</th><th>Actions</th>
-    </tr>
-    <% @cart_items.each do |ci| %>
-      <tr>
-        <td><%= ci.menu_item.name %></td>
-        <td>
-          <%= form_with url: cart_item_path(ci), method: :patch, local: true do |f| %>
-            <%= f.number_field :quantity, value: ci.quantity, min: 1 %>
-            <%= f.submit "Update" %>
+  <div class="space-y-6">
+    <% @cart_items.each do |item| %>
+      <div class="bg-white rounded-xl shadow p-4 flex items-center justify-between border hover:shadow-md transition">
+
+        <!-- Image & Item Info -->
+        <div class="flex items-center gap-4">
+          <%= image_tag item.menu_item.image_url, class: "h-20 w-20 object-cover rounded" %>
+          <div>
+            <h3 class="text-lg font-semibold text-gray-800"><%= item.menu_item.name %></h3>
+            <p class="text-sm text-gray-600">Price: ₹<%= item.menu_item.price %> × <%= item.quantity %></p>
+          </div>
+        </div>
+
+        <!-- Quantity Form + Delete -->
+        <div class="flex items-center gap-3">
+          <%= form_with(model: item, url: cart_item_path(item), method: :patch, local: true, class: "flex gap-2 items-center") do |f| %>
+            <%= f.number_field :quantity, value: item.quantity, min: 1,
+                  class: "border rounded px-2 py-1 w-16 text-center text-gray-700" %>
+            <%= f.submit "Update", class: "bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700" %>
           <% end %>
-        </td>
-        <td>₹<%= ci.menu_item.price * ci.quantity %></td>
-        <td><%= link_to "Remove", cart_item_path(ci), method: :delete, data: { confirm: "Remove this item?" } %></td>
-      </tr>
+
+          <%= button_to "❌", cart_item_path(item), method: :delete, data: { confirm: "Remove this item?" },
+                class: "text-red-600 hover:text-red-800 text-xl bg-transparent border-none" %>
+        </div>
+
+      </div>
     <% end %>
-  </table>
-  <br>
-  <%= button_to "Place Order", orders_path, method: :post, class: "bg-green-600 px-4 py-2 rounded text-white" %>
+  </div>
+
+  <!-- Total + Checkout -->
+  <div class="text-right mt-8">
+    <%= button_to "✅ Proceed to Checkout", orders_path, method: :post,
+          class: "mt-4 inline-block bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-full transition" %>
+  </div>
+
 <% else %>
-  <p>Your cart is empty.</p>
+  <p class="text-gray-600 text-center text-lg mt-10">
+    Your cart is empty. Go add something delicious! 🍽️
+  </p>
+  <div class="text-center mt-6">
+    <%= link_to "Browse Restaurants", restaurants_path,
+          class: "inline-block bg-indigo-600 text-white px-5 py-2 rounded-full hover:bg-indigo-700 transition" %>
+  </div>
 <% end %>

@@ -1,34 +1,37 @@
-# app/controllers/cart_items_controller.rb
 class CartItemsController < ApplicationController
-  before_action :prevent_owner_addition, only: [:create]
+  before_action :authenticate_user!
 
   def create
-    cart = current_user.cart || current_user.create_cart(restaurant_id: params[:restaurant_id])
-    item = cart.cart_items.find_or_initialize_by(menu_item_id: params[:menu_item_id])
-    item.quantity = params[:quantity] || item.quantity + 1
-    item.save
-    redirect_to cart_path
+    cart = current_user.cart
+    item = cart.cart_items.find_by(menu_item_id: params[:menu_item_id])
+
+    if item
+      item.increment!(:quantity)
+    else
+      cart.cart_items.create!(menu_item_id: params[:menu_item_id], quantity: 1)
+    end
+
+    redirect_to cart_path, notice: "Item added to cart."
   end
 
   def update
-    item = CartItem.find(params[:id])
-    item.update(quantity: params[:quantity])
-    redirect_to cart_path
+    @cart_item = current_user.cart.cart_items.find(params[:id])
+    if @cart_item.update(cart_item_params)
+      redirect_to cart_path, notice: "Cart item updated successfully."
+    else
+      redirect_to cart_path, alert: "Failed to update item."
+    end
   end
 
   def destroy
-    item = CartItem.find(params[:id])
+    item = current_user.cart.cart_items.find(params[:id])
     item.destroy
-    redirect_to cart_path
+    redirect_to cart_path, notice: "Item removed from cart."
   end
-  
+
   private
-  
-  def prevent_owner_addition
-    if current_user == MenuItem.find(params[:menu_item_id]).restaurant.user
-      redirect_to root_path, alert: "Restaurant owners can't order their own items."
-    end
+
+  def cart_item_params
+    params.require(:cart_item).permit(:quantity)
   end
 end
-
-

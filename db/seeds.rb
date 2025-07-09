@@ -6,7 +6,7 @@ puts "🌱 Seeding 50 Restaurants and Menu Items..."
 MenuItem.destroy_all
 Restaurant.destroy_all
 
-owner = User.find_by(email: "dheerajkalwar866@gmail.com")
+owner = User.find_by(email: "dk1375108@gmail.com")
 
 if owner.nil?
   puts "⚠️  User not found. Please create the user before running the seed."

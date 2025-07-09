@@ -3,25 +3,35 @@
 <% if @orders.any? %>
   <div class="space-y-6">
     <% @orders.each do |order| %>
-      <div class="bg-white p-6 rounded-xl shadow border border-gray-100">
-        <div class="flex justify-between items-center">
-          <h3 class="text-xl font-semibold text-indigo-700">Order #<%= order.id %> - <%= order.restaurant.name %></h3>
-          <span class="text-sm text-gray-500">Total: ₹<%= order.total %></span>
+      <div class="bg-gradient-to-r from-white to-indigo-50 p-6 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-sm px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full">
+            <%= order.status.capitalize %>
+          </span>
         </div>
 
         <ul class="mt-4 space-y-2">
-          <% order.order_items.each do |oi| %>
-            <li class="flex justify-between text-gray-700">
-              <span><%= oi.menu_item.name %> × <%= oi.quantity %></span>
-              <span>₹<%= oi.price * oi.quantity %></span>
+          <% order.order_items.includes(:menu_item).each do |item| %>
+            <li class="flex justify-between text-gray-700 border-b pb-2">
+              <div>
+                <span class="font-medium"><%= item.menu_item&.name || "Item not found" %></span>
+                × <%= item.quantity %>
+              </div>
+              <span class="font-semibold">₹<%= item.price * item.quantity %></span>
             </li>
           <% end %>
         </ul>
 
-        <div class="text-sm text-gray-500 mt-2">Placed on: <%= order.created_at.strftime("%d %b %Y, %I:%M %p") %></div>
+        <div class="mt-4 flex justify-between text-sm text-gray-500">
+          <span>Placed on: <%= order.created_at.strftime("%d %b %Y, %I:%M %p") %></span>
+          <span class="font-bold text-indigo-800">Total: ₹<%= order.total %></span>
+        </div>
       </div>
     <% end %>
   </div>
 <% else %>
-  <p class="text-gray-600">No orders yet. Time to eat something! 🍽️</p>
+  <div class="text-center text-gray-600 mt-10">
+    <p class="text-xl">No orders yet. Time to eat something! 🍽️</p>
+    <%= link_to 'Browse Restaurants', '/customers/restaurants', class: 'mt-4 inline-block bg-indigo-600 text-white px-5 py-2 rounded hover:bg-indigo-700 transition' %>
+  </div>
 <% end %>
