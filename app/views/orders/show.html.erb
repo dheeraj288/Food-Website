@@ -44,8 +44,8 @@
     </h3>
   </div>
 
-  <%# ✅ Show Stripe Elements form only if order is unpaid %>
-  <% if @order.status != "paid" %>
+  <%# ✅ Show Stripe Elements form only if order is NOT paid or confirmed %>
+  <% unless ["paid", "confirmed"].include?(@order.status.downcase) %>
     <div id="payment-form" class="mt-6">
       <form id="stripe-form">
         <div id="card-element" class="border p-3 rounded mb-4"></div>
@@ -58,6 +58,7 @@
     </div>
   <% end %>
 </div>
+
 <script src="https://js.stripe.com/v3/"></script>
 <script>
   document.addEventListener("turbo:load", function () {

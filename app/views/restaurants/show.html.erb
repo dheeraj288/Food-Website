@@ -51,25 +51,61 @@
   <%= link_to "➕ Add New Item", new_restaurant_menu_item_path(@restaurant),
     class: "bg-indigo-600 text-white font-semibold px-6 py-3 rounded-full shadow-md hover:bg-indigo-700 transition" %>
 </div>
-
 <!-- Reviews Section -->
 <section class="mt-20">
-  <h3 class="text-3xl font-bold text-gray-900 mb-6 text-center">💬 Customer Reviews</h3>
+  <h3 class="text-3xl font-bold text-gray-900 mb-10 text-center">💬 What Our Customers Say</h3>
 
   <% if @restaurant.reviews.any? %>
-    <div class="space-y-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <% @restaurant.reviews.each do |review| %>
-        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-          <div class="flex justify-between items-center">
-            <strong class="text-gray-800"><%= review.user.email %></strong>
-            <span class="text-yellow-500 font-medium">⭐ <%= review.rating %>/5</span>
+        <div class="bg-white border border-gray-100 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <div class="flex items-center space-x-2">
+                <!-- Optional avatar -->
+                <div class="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 font-bold text-sm">
+                  <%= review.user.email[0].upcase %>
+                </div>
+                <strong class="text-gray-800 text-sm">
+                  <%= review.user.email %>
+                </strong>
+              </div>
+              <small class="text-gray-400 text-xs block mt-1">
+                <%= review.created_at.strftime("%b %d, %Y") %>
+              </small>
+            </div>
+
+            <% if  current_user.admin? %>
+              <%= link_to "Delete", restaurant_review_path(@restaurant, review),
+                method: :delete,
+                data: { confirm: "Are you sure?" },
+                class: "text-red-500 text-xs font-medium hover:underline" %>
+            <% end %>
           </div>
-          <p class="text-sm text-gray-700 mt-2"><%= review.comment %></p>
+
+          <!-- Star Rating -->
+          <div class="text-yellow-400 text-lg mb-2">
+            <%= "★" * review.rating %><%= "☆" * (5 - review.rating) %>
+          </div>
+
+          <!-- Comment -->
+          <p class="text-gray-700 text-sm leading-relaxed">
+            <%= review.comment %>
+          </p>
+
+          <!-- Optional upvote -->
+          <% if defined?(review.upvotes) %>
+            <div class="mt-4 text-sm text-gray-500 flex items-center space-x-2">
+              <%= button_to "👍 #{review.upvotes || 0}",
+                upvote_restaurant_review_path(@restaurant, review),
+                method: :post,
+                class: "text-indigo-600 font-medium hover:underline" %>
+            </div>
+          <% end %>
         </div>
       <% end %>
     </div>
   <% else %>
-    <p class="text-center text-gray-500">No reviews yet. Be the first to leave one!</p>
+    <p class="text-center text-gray-500 text-sm">No reviews yet. Be the first to leave one!</p>
   <% end %>
-
- 
+</section>
