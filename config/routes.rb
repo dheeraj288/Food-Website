@@ -8,8 +8,7 @@ Rails.application.routes.draw do
               sessions: 'users/sessions',
               registrations: 'users/registrations'
             }
-
-
+            
   get 'admin_dashboard', to: 'dashboards#admin'
   get 'owner_dashboard', to: 'dashboards#owner'
   get 'customer_dashboard', to: 'dashboards#customer'
@@ -31,9 +30,10 @@ namespace :customers do
   resources :restaurants, only: [:index, :show]
 end
 
-
-
-
+  post 'payments', to: 'payments#create'
+  post 'payments/elements', to: 'payments#elements'
+  get 'payments/success', to: 'payments#success'
+  get 'payments/cancel', to: 'payments#cancel'
 
   get "up" => "rails/health#show", as: :rails_health_check
  

@@ -8,6 +8,8 @@ class User < ApplicationRecord
           has_one :cart, dependent: :destroy
           has_many :cart_items, through: :cart
           has_many :orders
+          has_many :payments, dependent: :nullify
+
 
           scope :owned_by, ->(user) { where(user_id: user.id) }
 

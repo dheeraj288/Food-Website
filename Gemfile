@@ -71,3 +71,4 @@ end
 gem "devise", "~> 4.9"
 gem 'jwt'
 gem 'faker'
+gem 'stripe'

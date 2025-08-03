@@ -4,7 +4,6 @@ class DashboardsController < ApplicationController
   before_action -> { authorize_role!("customer") }, only: [:customer]
 
   def admin
-    # Admin overview logic (e.g., all users, stats)
   end
 
   def owner

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_06_25_071514) do
+ActiveRecord::Schema[7.1].define(version: 2025_08_02_173641) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -55,8 +55,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_25_071514) do
     t.integer "quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "restaurant_id"
     t.index ["cart_id"], name: "index_cart_items_on_cart_id"
     t.index ["menu_item_id"], name: "index_cart_items_on_menu_item_id"
+    t.index ["restaurant_id"], name: "index_cart_items_on_restaurant_id"
   end
 
   create_table "carts", force: :cascade do |t|
@@ -119,6 +121,18 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_25_071514) do
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
+  create_table "payments", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "order_id", null: false
+    t.string "stripe_payment_intent_id"
+    t.decimal "amount"
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_payments_on_order_id"
+    t.index ["user_id"], name: "index_payments_on_user_id"
+  end
+
   create_table "restaurants", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -158,6 +172,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_25_071514) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "cart_items", "carts"
   add_foreign_key "cart_items", "menu_items"
+  add_foreign_key "cart_items", "restaurants"
   add_foreign_key "carts", "restaurants"
   add_foreign_key "carts", "users"
   add_foreign_key "email_otps", "users"
@@ -167,6 +182,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_25_071514) do
   add_foreign_key "order_items", "orders"
   add_foreign_key "orders", "restaurants"
   add_foreign_key "orders", "users"
+  add_foreign_key "payments", "orders"
+  add_foreign_key "payments", "users"
   add_foreign_key "restaurants", "users"
   add_foreign_key "reviews", "restaurants"
   add_foreign_key "reviews", "users"

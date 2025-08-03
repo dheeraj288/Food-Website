@@ -2,16 +2,20 @@ class CartItemsController < ApplicationController
   before_action :authenticate_user!
 
   def create
-    cart = current_user.cart
-    item = cart.cart_items.find_by(menu_item_id: params[:menu_item_id])
+    @menu_item = MenuItem.find(params[:menu_item_id])
+    @cart = current_user.cart || current_user.create_cart!(restaurant: @menu_item.restaurant)
 
-    if item
-      item.increment!(:quantity)
+    @cart_item = @cart.cart_items.build(
+      menu_item: @menu_item,
+      quantity: 1,
+      restaurant: @menu_item.restaurant
+    )
+
+    if @cart_item.save
+      redirect_to cart_path, notice: 'Item added to cart.'
     else
-      cart.cart_items.create!(menu_item_id: params[:menu_item_id], quantity: 1)
+      redirect_to cart_path, alert: @cart_item.errors.full_messages.join(", ")
     end
-
-    redirect_to cart_path, notice: "Item added to cart."
   end
 
   def update
