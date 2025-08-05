@@ -46,7 +46,9 @@ class PaymentsController < ApplicationController
       payment.order.update!(status: "confirmed")
       clear_cart(payment.order)
 
+      @order = payment.order
       render :success
+
     else
       redirect_to customer_dashboard_path, alert: "Payment not found."
     end

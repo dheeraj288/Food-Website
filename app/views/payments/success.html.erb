@@ -1,16 +1,94 @@
-<div class="max-w-2xl mx-auto p-8 mt-10 bg-white rounded shadow-md text-center">
-  <div class="flex justify-center mb-6">
-    <svg class="w-16 h-16 text-green-500" fill="none" stroke="currentColor" stroke-width="2"
-         viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round"
-            d="M9 12l2 2l4 -4m-9 7a9 9 0 1 0 -3 -7.5"></path>
-    </svg>
-  </div>
-  <h2 class="text-2xl font-bold text-green-600 mb-2">Payment Successful 🎉</h2>
-  <p class="text-gray-700 mb-4">Thank you! Your payment has been successfully processed.</p>
+<div class="px-4 sm:px-6 lg:px-8">
+  <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-2xl p-8 sm:p-10">
+    
+    <!-- Success icon -->
+    <div class="flex justify-center mb-6">
+      <div class="bg-green-100 p-4 rounded-full shadow-lg animate-bounce">
+        <svg class="w-12 h-12 text-green-600" fill="none" stroke="currentColor" stroke-width="2"
+             viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M9 12l2 2l4-4M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z" />
+        </svg>
+      </div>
+    </div>
 
-  <a href="<%= orders_path %>"
-     class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded font-medium shadow">
-    View Your Order
-  </a>
+    <!-- Heading -->
+    <h2 class="text-3xl font-extrabold text-pink-600 text-center mb-2">Order Confirmed 🎉</h2>
+    <p class="text-gray-700 text-center mb-6">Thank you! Your order from <strong><%= @order.restaurant.name %></strong> has been successfully placed.</p>
+
+    <!-- Order Items -->
+    <div class="bg-pink-50 p-6 rounded-lg mb-6">
+      <h3 class="text-xl font-semibold text-pink-700 mb-4">Your Order (#<%= @order.id %>)</h3>
+      <ul class="space-y-4">
+        <% @order.order_items.includes(:menu_item).each do |item| %>
+          <li class="flex items-center space-x-4 bg-white rounded-lg p-3 shadow-sm">
+            <div class="w-16 h-16 rounded overflow-hidden border border-gray-200 shadow">
+              <% if item.menu_item.image_url.present? %>
+                <img src="<%= item.menu_item.image_url %>" alt="<%= item.menu_item.name %>" class="w-full h-full object-cover" />
+              <% else %>
+                <img src="https://via.placeholder.com/64" alt="No image" class="w-full h-full object-cover" />
+              <% end %>
+            </div>
+            <div class="flex-1">
+              <p class="text-gray-800 font-medium"><%= item.menu_item.name %></p>
+              <p class="text-sm text-gray-500">Qty: <%= item.quantity %></p>
+            </div>
+            <div class="text-right font-semibold text-gray-700">
+              ₹<%= item.quantity * item.price %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+
+      <!-- Total -->
+      <div class="flex justify-between mt-6 pt-4 border-t font-bold text-gray-900 text-lg">
+        <span>Total</span>
+        <span>₹<%= @order.total %></span>
+      </div>
+    </div>
+
+    <!-- Estimated delivery -->
+    <div class="mb-8 text-center">
+      <p class="text-sm text-gray-600">Estimated delivery:</p>
+      <p class="text-lg font-semibold text-green-700 animate-pulse">
+        <%= (Time.current + 30.minutes).strftime("%I:%M %p") %>
+      </p>
+    </div>
+
+    <!-- Order Status Steps -->
+    <div class="mb-10">
+      <h3 class="text-lg font-semibold text-pink-700 mb-4">Order Status</h3>
+      <ol class="relative border-l-4 border-pink-200 pl-6 space-y-5">
+        <li>
+          <span class="absolute left-0 w-4 h-4 bg-green-500 rounded-full -ml-2.5 mt-1.5"></span>
+          <h4 class="font-semibold text-gray-800">Order Confirmed</h4>
+          <p class="text-sm text-gray-500">We've received your order</p>
+        </li>
+        <li>
+          <span class="absolute left-0 w-4 h-4 bg-yellow-400 rounded-full -ml-2.5 mt-1.5"></span>
+          <h4 class="font-semibold text-gray-800">Preparing your food</h4>
+          <p class="text-sm text-gray-500">Our chef is on it 🧑‍🍳</p>
+        </li>
+        <li>
+          <span class="absolute left-0 w-4 h-4 bg-gray-400 rounded-full -ml-2.5 mt-1.5"></span>
+          <h4 class="font-semibold text-gray-800">Out for delivery</h4>
+          <p class="text-sm text-gray-500">We'll notify you when it’s on the way</p>
+        </li>
+      </ol>
+    </div>
+
+    <!-- CTA Button -->
+    <div class="text-center">
+      <a href="<%= orders_path %>"
+         class="inline-block bg-gradient-to-r from-pink-500 to-yellow-500 hover:from-pink-600 hover:to-yellow-600 text-white px-6 py-2 rounded-full font-semibold shadow-md transition">
+        View Your Orders
+      </a>
+    </div>
+  </div>
+
+  <!-- Sticky support footer -->
+  <div class="fixed bottom-0 left-0 right-0 bg-white border-t shadow-inner py-3 px-6 flex justify-between items-center z-50">
+    <span class="text-sm text-gray-600">Need help with your order?</span>
+    <a href="#" class="text-sm text-pink-600 font-medium hover:underline">Contact Support</a>
+  </div>
 </div>
