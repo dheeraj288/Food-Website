@@ -1,5 +1,6 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_order, only: [:show, :track, :update]
 
   def index
     @orders = current_user.orders
@@ -8,9 +9,7 @@ class OrdersController < ApplicationController
   end
 
   def show
-    @order = current_user.orders
-                         .includes(order_items: :menu_item)
-                         .find(params[:id])
+    @delivery_boy = @order.delivery_boy
   end
 
   def create
@@ -27,15 +26,45 @@ class OrdersController < ApplicationController
     end
   end
 
+  def track
+    @delivery_boy = @order.delivery_boy
+  end
+
+  def update
+    @order = current_user.orders.find(params[:id])
+    if @order.update(order_params)
+      redirect_to order_path(@order), notice: "Order updated successfully."
+    else
+      flash.now[:alert] = "Failed to update order."
+      render :show
+    end
+  end
+
   private
+
+  def set_order
+    @order = current_user.orders.includes(order_items: :menu_item).find(params[:id])
+  end
+
+  def order_params
+    params.require(:order).permit(:delivery_address, :latitude, :longitude, :status, :delivery_boy_id)
+  end
 
   def build_order_from_cart(cart)
     ActiveRecord::Base.transaction do
+      delivery_boy = DeliveryBoy.available.first
+      raise "No delivery boy available" unless delivery_boy
+
       order = current_user.orders.create!(
-        restaurant: cart.restaurant,
-        total: calculate_total(cart),
-        status: :pending
-      )
+                restaurant: cart.restaurant,
+                total: calculate_total(cart),
+                status: :pending,
+                delivery_address: params[:delivery_address],
+                latitude: 28.6139,
+                longitude: 77.2090,
+                delivery_boy: delivery_boy
+              )
+
       cart.cart_items.includes(:menu_item).each do |item|
         order.order_items.create!(
           menu_item: item.menu_item,
@@ -43,6 +72,8 @@ class OrdersController < ApplicationController
           price: item.menu_item.price
         )
       end
+
+      cart.destroy # Clear cart after placing order
       order
     end
   end

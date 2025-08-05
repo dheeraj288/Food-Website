@@ -24,7 +24,22 @@ end
 
 resource :cart, only: [:show]
 resources :cart_items, only: [:create, :update, :destroy]
-resources :orders, only: [:index, :show, :create]
+# config/routes.rb
+resources :orders do
+  member do
+    get :track
+    patch :update
+  end
+end
+
+# config/routes.rb
+resources :delivery_boys, only: [] do
+  member do
+    patch :update_location
+  end
+end
+
+
 
 namespace :customers do
   resources :restaurants, only: [:index, :show]

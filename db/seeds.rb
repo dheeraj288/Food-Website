@@ -5,6 +5,10 @@ puts "🌱 Seeding 50 Restaurants and Menu Items..."
 
 MenuItem.destroy_all
 Restaurant.destroy_all
+DishCategory.destroy_all
+DeliveryBoy.destroy_all
+Order.destroy_all
+OrderItem.destroy_all
 
 owner = User.find_by(email: "dheerajkalwar866@gmail.com")
 
@@ -62,3 +66,33 @@ end
 end
 
 puts "🎉 Done! 50 Restaurants with menu items and categories created."
+
+puts "🚴 Creating one DeliveryBoy and one Order..."
+
+10.times do |i|
+  delivery_boy = DeliveryBoy.create!(
+    name: "Rahul Kumar",
+    phone: "9876543210",
+    latitude: 28.7041,
+    longitude: 77.1025
+  )
+end
+
+restaurant = Restaurant.first
+user = owner
+
+if user && restaurant
+  order = Order.create!(
+    user: user,
+    restaurant: restaurant,
+    delivery_address: "Connaught Place, New Delhi",
+    latitude: 28.6315,
+    longitude: 77.2167,
+    status: "out_for_delivery",
+    delivery_boy: delivery_boy
+  )
+
+  puts "✅ Order ##{order.id} created and assigned to Rahul Kumar"
+else
+  puts "⚠️  User or Restaurant not found — Order not created"
+end

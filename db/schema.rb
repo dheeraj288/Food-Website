@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_08_02_173641) do
+ActiveRecord::Schema[7.1].define(version: 2025_08_05_160423) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -70,6 +70,16 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_02_173641) do
     t.index ["user_id"], name: "index_carts_on_user_id"
   end
 
+  create_table "delivery_boys", force: :cascade do |t|
+    t.string "name"
+    t.string "phone"
+    t.float "latitude"
+    t.float "longitude"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "available"
+  end
+
   create_table "dish_categories", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -117,6 +127,11 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_02_173641) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "status"
+    t.integer "delivery_boy_id", null: false
+    t.string "delivery_address"
+    t.float "latitude"
+    t.float "longitude"
+    t.index ["delivery_boy_id"], name: "index_orders_on_delivery_boy_id"
     t.index ["restaurant_id"], name: "index_orders_on_restaurant_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
@@ -180,6 +195,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_08_02_173641) do
   add_foreign_key "menu_items", "restaurants"
   add_foreign_key "order_items", "menu_items"
   add_foreign_key "order_items", "orders"
+  add_foreign_key "orders", "delivery_boys"
   add_foreign_key "orders", "restaurants"
   add_foreign_key "orders", "users"
   add_foreign_key "payments", "orders"
