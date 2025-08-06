@@ -17,7 +17,7 @@ if owner.nil?
   exit
 end
 
-# Make sure DishCategory exists
+# Create Dish Categories if not already present
 if DishCategory.count.zero?
   %w[Starter Main Dessert Beverage].each do |cat|
     DishCategory.create!(name: cat)
@@ -43,6 +43,7 @@ def food_image_url
   FOOD_IMAGES.sample
 end
 
+# Create 50 restaurants
 50.times do |i|
   restaurant = Restaurant.create!(
     name: Faker::Restaurant.unique.name,
@@ -67,21 +68,29 @@ end
 
 puts "🎉 Done! 50 Restaurants with menu items and categories created."
 
-puts "🚴 Creating one DeliveryBoy and one Order..."
+# ✅ Create 10 delivery boys and save them in an array
+puts "🚴 Creating 10 Delivery Boys..."
 
-10.times do |i|
-  delivery_boy = DeliveryBoy.create!(
-    name: "Rahul Kumar",
-    phone: "9876543210",
-    latitude: 28.7041,
-    longitude: 77.1025
+delivery_boys = Array.new(10) do
+  DeliveryBoy.create!(
+    name: Faker::Name.name,
+    phone: Faker::PhoneNumber.unique.cell_phone_in_e164,
+    latitude: Faker::Address.latitude,
+    longitude: Faker::Address.longitude,
+    available: true
   )
 end
 
+puts "✅ 10 Delivery Boys created."
+
+# ✅ Create one order and assign one of the delivery boys
+puts "🛒 Creating one Order..."
+
 restaurant = Restaurant.first
 user = owner
+delivery_boy = delivery_boys.sample  # Pick a random delivery boy from the array
 
-if user && restaurant
+if user && restaurant && delivery_boy
   order = Order.create!(
     user: user,
     restaurant: restaurant,
@@ -92,7 +101,7 @@ if user && restaurant
     delivery_boy: delivery_boy
   )
 
-  puts "✅ Order ##{order.id} created and assigned to Rahul Kumar"
+  puts "✅ Order ##{order.id} created and assigned to #{delivery_boy.name}"
 else
-  puts "⚠️  User or Restaurant not found — Order not created"
+  puts "⚠️  User, Restaurant, or DeliveryBoy missing — Order not created"
 end
