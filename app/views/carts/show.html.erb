@@ -1,44 +1,77 @@
-<h2 class="text-3xl font-bold mb-6 text-gray-800">🛒 Your Cart</h2>
+<h2 class="text-4xl font-bold mb-8 text-gray-900">🛒 Your Cart</h2>
 
 <% if @cart_items.any? %>
-  <div class="space-y-6">
-    <% @cart_items.each do |item| %>
-      <div class="bg-white rounded-xl shadow p-4 flex items-center justify-between border hover:shadow-md transition">
+  <div class="space-y-6 pb-32">
 
-        <div class="flex items-center gap-4">
-          <%= image_tag item.menu_item.image_url, class: "h-20 w-20 object-cover rounded" %>
-          <div>
-            <h3 class="text-lg font-semibold text-gray-800"><%= item.menu_item.name %></h3>
-            <p class="text-sm text-gray-600">Price: ₹<%= item.menu_item.price %> × <%= item.quantity %></p>
+    <% @cart_items.each do |item| %>
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-5 flex gap-6 items-center hover:shadow-lg transition-transform hover:-translate-y-1 duration-300">
+
+        <!-- Dish Image -->
+        <%= image_tag item.menu_item.image_url, class: "h-24 w-24 object-cover rounded-lg shadow border" %>
+
+        <!-- Dish Info -->
+        <div class="flex-grow">
+          <div class="flex justify-between items-start">
+            <h3 class="text-xl font-semibold text-gray-900"><%= item.menu_item.name %></h3>
+
+            <!-- 🗑️ Remove Button -->
+            <%= button_to cart_item_path(item),
+                          method: :delete,
+                          data: { confirm: "Remove this item?" },
+                          class: "text-red-500 hover:text-red-700 text-xl leading-none" do %>
+              <i class="fas fa-trash-alt"></i>
+            <% end %>
           </div>
+
+          <p class="text-gray-500 text-sm mt-1">₹<%= item.menu_item.price %> x <%= item.quantity %></p>
+          <p class="text-green-600 font-semibold mt-2">Total: ₹<%= item.menu_item.price * item.quantity %></p>
         </div>
 
-        <div class="flex items-center gap-3">
-          <%= form_with(model: item, url: cart_item_path(item), method: :patch, local: true, class: "flex gap-2 items-center") do |f| %>
-            <%= f.number_field :quantity, value: item.quantity, min: 1,
-                  class: "border rounded px-2 py-1 w-16 text-center text-gray-700" %>
-            <%= f.submit "Update", class: "bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700" %>
+        <!-- Quantity Selector -->
+        <div class="flex items-center gap-2 bg-gray-100 rounded-full px-3 py-1 shadow-inner">
+          <!-- - Button -->
+          <% if item.quantity > 1 %>
+            <%= form_with(model: item, url: cart_item_path(item), method: :patch, local: true) do |f| %>
+              <%= f.hidden_field :quantity, value: item.quantity - 1 %>
+              <%= f.submit "-", class: "text-lg font-bold text-gray-600 hover:text-red-500 px-2" %>
+            <% end %>
+          <% else %>
+            <span class="text-lg text-gray-400 px-2">–</span>
           <% end %>
 
-          <%= button_to "❌", cart_item_path(item), method: :delete, data: { confirm: "Remove this item?" },
-                class: "text-red-600 hover:text-red-800 text-xl bg-transparent border-none" %>
+          <!-- Quantity Display -->
+          <span class="px-2 text-gray-800 font-medium"><%= item.quantity %></span>
+
+          <!-- + Button -->
+          <%= form_with(model: item, url: cart_item_path(item), method: :patch, local: true) do |f| %>
+            <%= f.hidden_field :quantity, value: item.quantity + 1 %>
+            <%= f.submit "+", class: "text-lg font-bold text-gray-600 hover:text-green-500 px-2" %>
+          <% end %>
         </div>
 
       </div>
     <% end %>
+
+    <!-- Subtotal -->
+    <div class="mt-10 text-right text-xl font-semibold text-gray-900">
+      Subtotal: ₹<%= @cart_items.sum { |item| item.menu_item.price * item.quantity } %>
+    </div>
   </div>
 
-  <div class="text-right mt-8">
-    <%= button_to "✅ Proceed to Checkout", orders_path, method: :post,
-          class: "mt-4 inline-block bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-full transition" %>
+  <!-- ✅ Sticky Checkout Bar -->
+  <div class="fixed bottom-0 left-0 w-full bg-white border-t border-gray-300 shadow-md p-4 flex justify-between items-center z-50">
+    <div class="text-lg font-semibold text-gray-800">
+      Total: ₹<%= @cart_items.sum { |item| item.menu_item.price * item.quantity } %>
+    </div>
+    <%= button_to "Proceed to Checkout", orders_path, method: :post,
+          class: "bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-3 rounded-full shadow transition" %>
   </div>
 
 <% else %>
-  <p class="text-gray-600 text-center text-lg mt-10">
-    Your cart is empty. Go add something delicious! 🍽️
-  </p>
-  <div class="text-center mt-6">
-    <%= link_to "Browse Restaurants", restaurants_path,
-          class: "inline-block bg-indigo-600 text-white px-5 py-2 rounded-full hover:bg-indigo-700 transition" %>
+  <!-- 🛒 Empty Cart Message -->
+  <div class="text-center mt-20">
+    <p class="text-gray-500 text-lg mb-6">Your cart is empty 😔</p>
+    <%= link_to "🍽️ Discover Restaurants", restaurants_path,
+          class: "inline-block bg-red-500 text-white px-6 py-3 rounded-full hover:bg-red-600 transition shadow-md" %>
   </div>
 <% end %>
