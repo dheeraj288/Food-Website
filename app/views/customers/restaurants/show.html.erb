@@ -1,45 +1,46 @@
 <h2 class="text-4xl font-extrabold text-gray-900 mb-12 text-center">🍴 Our Delicious Menu</h2>
 
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 px-4 sm:px-0">
   <% @restaurant.menu_items.each do |item| %>
-    <div class="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-200 hover:shadow-xl transition duration-300">
+    <div class="bg-white rounded-3xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-2xl transform hover:scale-105 transition-transform duration-300 ease-in-out group">
       
       <% if item.image_url.present? %>
-        <div class="relative w-full aspect-w-4 aspect-h-3">
-          <img src="<%= item.image_url %>" alt="<%= item.name %>" class="w-full h-full object-cover">
-          <div class="absolute bottom-0 w-full bg-gradient-to-t from-black/70 to-transparent px-4 py-2 text-white">
-            <h3 class="text-lg font-semibold"><%= item.name %></h3>
-            <span class="text-sm text-indigo-200">₹<%= item.price %></span>
+        <div class="relative w-full h-48 overflow-hidden rounded-t-3xl">
+          <img src="<%= item.image_url %>" alt="<%= item.name %>" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+          
+          <!-- Gradient Overlay -->
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          
+          <!-- Price Tag -->
+          <span class="absolute top-4 right-4 bg-indigo-700 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">₹<%= item.price %></span>
+          
+          <!-- Title and Category -->
+          <div class="absolute bottom-4 left-4 text-white z-10">
+            <h3 class="text-xl font-bold"><%= item.name %></h3>
+            <span class="inline-block bg-gradient-to-r from-indigo-500 to-purple-600 px-3 py-1 rounded-full text-xs font-semibold shadow-md mt-1">
+              <%= item.dish_category.name %>
+            </span>
           </div>
         </div>
       <% else %>
-        <div class="w-full aspect-w-4 aspect-h-3 bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
+        <div class="w-full h-48 bg-gray-100 flex items-center justify-center text-gray-400 text-sm rounded-t-3xl">
           No Image Available
         </div>
       <% end %>
 
-      <div class="p-5 space-y-4">
-        <div class="flex justify-between items-center">
-          <span class="inline-block bg-indigo-100 text-indigo-700 text-xs font-semibold px-3 py-1 rounded-full">
-            <%= item.dish_category.name %>
-          </span>
-          <span class="text-lg font-bold text-indigo-600">₹<%= item.price %></span>
-        </div>
-
-        <p class="text-gray-600 text-sm line-clamp-3">
-          <%= item.description.to_plain_text.truncate(150) %>
-        </p>
+      <div class="p-6 space-y-5">
+        <p class="text-gray-700 text-sm line-clamp-3"><%= item.description.to_plain_text.truncate(150) %></p>
 
         <div class="flex justify-between items-center">
-          <%= form_with url: cart_items_path, method: :post, local: true do |f| %>
+          <%= form_with url: cart_items_path, method: :post, local: false, class: "inline-block add-to-cart-form" do |f| %>
             <%= hidden_field_tag :menu_item_id, item.id %>
             <%= hidden_field_tag :restaurant_id, @restaurant.id %>
-            <%= f.submit "➕ Add to Cart", class: "text-sm bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700" %>
+            <%= f.submit "➕ Add to Cart", class: "flex items-center space-x-1 bg-indigo-600 text-white px-5 py-2 rounded-full shadow-md hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 transition" %>
           <% end %>
 
-          <div class="flex space-x-4 text-sm">
-            <%= link_to "Edit", edit_restaurant_menu_item_path(@restaurant, item), class: "text-blue-600 hover:underline font-medium" %>
-            <%= link_to "Delete", restaurant_menu_item_path(@restaurant, item), method: :delete, data: { confirm: "Are you sure?" }, class: "text-red-600 hover:underline font-medium" %>
+          <div class="flex space-x-6 text-sm">
+            <%= link_to "Edit", edit_restaurant_menu_item_path(@restaurant, item), class: "text-blue-600 hover:underline font-semibold" %>
+            <%= link_to "Delete", restaurant_menu_item_path(@restaurant, item), method: :delete, data: { confirm: "Are you sure?" }, class: "text-red-600 hover:underline font-semibold" %>
           </div>
         </div>
       </div>
@@ -47,47 +48,89 @@
   <% end %>
 </div>
 
-<div class="mt-12 flex justify-end">
+<div class="mt-12 flex justify-end px-4 sm:px-0">
   <%= link_to "➕ Add New Item", new_restaurant_menu_item_path(@restaurant),
     class: "bg-indigo-600 text-white font-semibold px-6 py-3 rounded-full shadow-md hover:bg-indigo-700 transition" %>
 </div>
 
 <!-- Reviews Section -->
-<section class="mt-20">
-  <h3 class="text-3xl font-bold text-gray-900 mb-6 text-center">💬 Customer Reviews</h3>
+<section class="mt-20 px-4 sm:px-0 max-w-5xl mx-auto bg-cover bg-center relative rounded-3xl overflow-hidden" style="background-image: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80');">
+  
+  <!-- Overlay for better readability -->
+  <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+
+  <h3 class="text-3xl font-bold text-white mb-8 text-center relative z-10">💬 Customer Reviews</h3>
 
   <% if @restaurant.reviews.any? %>
-    <div class="space-y-4">
+    <div class="space-y-6 relative z-10">
       <% @restaurant.reviews.each do |review| %>
-        <div class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
-          <div class="flex justify-between items-center">
+        <div class="bg-white bg-opacity-90 border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-lg transition-shadow duration-300">
+          <div class="flex justify-between items-center mb-2">
             <strong class="text-gray-800"><%= review.user.email %></strong>
-            <span class="text-yellow-500 font-medium">⭐ <%= review.rating %>/5</span>
+            <div class="flex items-center space-x-1">
+              <% 5.times do |i| %>
+                <% star_class = i < review.rating ? 'text-yellow-400' : 'text-gray-300' %>
+                <svg class="w-5 h-5 <%= star_class %>" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.95a1 1 0 00.95.69h4.15c.969 0 1.371 1.24.588 1.81l-3.36 2.44a1 1 0 00-.364 1.118l1.287 3.95c.3.92-.755 1.688-1.54 1.118l-3.36-2.44a1 1 0 00-1.175 0l-3.36 2.44c-.784.57-1.838-.197-1.54-1.118l1.286-3.95a1 1 0 00-.364-1.118L2.037 9.377c-.783-.57-.38-1.81.588-1.81h4.15a1 1 0 00.95-.69l1.286-3.95z" />
+                </svg>
+              <% end %>
+              <span class="ml-2 font-medium text-gray-700"><%= review.rating %>/5</span>
+            </div>
           </div>
-          <p class="text-sm text-gray-700 mt-2"><%= review.comment %></p>
+          <p class="text-gray-700 text-sm whitespace-pre-line"><%= review.comment %></p>
         </div>
       <% end %>
     </div>
   <% else %>
-    <p class="text-center text-gray-500">No reviews yet. Be the first to leave one!</p>
+    <p class="text-center text-gray-300 italic relative z-10">No reviews yet. Be the first to leave one!</p>
   <% end %>
 
   <!-- Review Form -->
-  <div class="mt-10 max-w-xl mx-auto bg-gray-50 p-6 rounded-xl shadow">
-    <h4 class="text-xl font-semibold mb-4">➕ Add Your Review</h4>
+  <div class="mt-12 bg-white bg-opacity-90 p-8 rounded-2xl shadow-lg max-w-xl mx-auto relative z-10">
+    <h4 class="text-2xl font-semibold mb-6 text-center">➕ Add Your Review</h4>
 
-    <%= form_with model: [@restaurant, Review.new], local: true, class: "space-y-4" do |f| %>
-      <div>
-        <%= f.label :rating, "Rating (1 to 5)", class: "block font-medium text-sm text-gray-700 mb-1" %>
-        <%= f.number_field :rating, in: 1..5, class: "w-full border border-gray-300 p-2 rounded focus:ring focus:ring-indigo-200" %>
+    <%= form_with model: [@restaurant, Review.new], local: true, class: "space-y-6" do |f| %>
+
+      <!-- Floating Label Rating Input -->
+      <div class="relative z-0 w-full group">
+        <%= f.number_field :rating, in: 1..5, class: "block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-indigo-600 peer", placeholder: " " %>
+        <%= f.label :rating, "Rating (1 to 5)", class: "absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-indigo-600" %>
       </div>
 
-      <div>
-        <%= f.label :comment, "Comment", class: "block font-medium text-sm text-gray-700 mb-1" %>
-        <%= f.text_area :comment, rows: 3, class: "w-full border border-gray-300 p-2 rounded focus:ring focus:ring-indigo-200" %>
+      <!-- Floating Label Comment Textarea -->
+      <div class="relative z-0 w-full group">
+        <%= f.text_area :comment, rows: 4, class: "block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-indigo-600 peer resize-none", placeholder: " " %>
+        <%= f.label :comment, "Comment", class: "absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:text-indigo-600" %>
       </div>
 
-      <%= f.submit "Submit Review", class: "bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition" %>
+      <%= f.submit "Submit Review", class: "w-full bg-indigo-600 text-white py-3 rounded-xl shadow-md hover:bg-indigo-700 transition" %>
     <% end %>
   </div>
+</section>
+
+  <script>
+  document.addEventListener("turbo:load", () => {
+    document.querySelectorAll(".add-to-cart-form").forEach(form => {
+      form.addEventListener("ajax:success", (event) => {
+        const [data, status, xhr] = event.detail;
+
+        if (data.success) {
+          const cartCountElem = document.getElementById("cart-count");
+          if (cartCountElem) {
+            cartCountElem.textContent = data.cart_item_count;
+            cartCountElem.classList.add("animate-bounce");
+            setTimeout(() => cartCountElem.classList.remove("animate-bounce"), 500);
+          }
+        } else {
+          alert("Failed to add to cart: " + (data.errors || []).join(", "));
+        }
+      });
+
+      form.addEventListener("ajax:error", () => {
+        alert("Error adding item to cart. Please try again.");
+      });
+    });
+  });
+</script>
+
 </section>

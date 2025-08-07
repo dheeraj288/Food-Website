@@ -1,25 +1,105 @@
+<!-- Hero Section -->
+<section class="relative w-full h-screen flex items-center justify-center overflow-hidden">
+  <!-- Optional: Lighter overlay -->
+  <div class="absolute inset-0 bg-black bg-opacity-30 z-10"></div>
 
-<!-- Categories -->
-<section class="py-12 px-6 bg-gray-100 mt-8 rounded-lg mx-4">
+  <!-- Background image -->
+  <div class="absolute inset-0 z-0">
+    <img src="https://thumbs.dreamstime.com/b/savory-bihar-cuisine-delicious-fusion-litti-chokha-chicken-vegetables-indulge-vibrant-flavors-india-354663606.jpg" 
+         alt="Bihari Food" class="w-full h-full object-cover" />
+  </div>
+
+  <!-- Content -->
+  <div class="relative z-20 text-center text-white px-6 max-w-3xl">
+    <h1 class="text-5xl md:text-6xl font-extrabold leading-tight mb-4 drop-shadow-md">Taste the Flavours of Bihar</h1>
+    <p class="text-xl md:text-2xl mb-6">Bihar Bhojan – Delivery, Dine-In & More</p>
+    <div class="max-w-xl mx-auto">
+      <input type="text" placeholder="Search for dishes or restaurants..." class="w-full p-4 rounded-lg text-gray-900 focus:outline-none shadow-md" />
+    </div>
+  </div>
+</section>
+
+
+<!-- Popular Categories -->
+<section class="py-16 px-6 bg-gray-100">
   <div class="max-w-6xl mx-auto">
-    <h2 class="text-2xl font-semibold mb-8 text-center">Popular Categories</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-      <div class="bg-white rounded shadow p-6 text-center hover:shadow-lg transition">
-        <img src="https://source.unsplash.com/100x100/?delivery" class="mx-auto mb-4 rounded-full" alt="Delivery">
-        <h3 class="font-semibold text-lg">Delivery</h3>
+    <h2 class="text-4xl font-bold mb-12 text-center text-gray-800">Popular Categories</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+      <div class="bg-white rounded-xl shadow-md hover:shadow-xl text-center p-6 transition duration-300">
+        <img src="https://images.pexels.com/photos/1639564/pexels-photo-1639564.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260" class="mx-auto mb-4 rounded-full w-28 h-28 object-cover border-4 border-gray-200" alt="Delivery">
+        <h3 class="text-xl font-semibold text-gray-700">Delivery</h3>
       </div>
-      <div class="bg-white rounded shadow p-6 text-center hover:shadow-lg transition">
-        <img src="https://source.unsplash.com/100x100/?dinein" class="mx-auto mb-4 rounded-full" alt="Dine-Out">
-        <h3 class="font-semibold text-lg">Dine-Out</h3>
+      <div class="bg-white rounded-xl shadow-md hover:shadow-xl text-center p-6 transition duration-300">
+        <img src="https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260" class="mx-auto mb-4 rounded-full w-28 h-28 object-cover border-4 border-gray-200" alt="Dine-Out">
+        <h3 class="text-xl font-semibold text-gray-700">Dine-Out</h3>
       </div>
-      <div class="bg-white rounded shadow p-6 text-center hover:shadow-lg transition">
-        <img src="https://source.unsplash.com/100x100/?nightlife" class="mx-auto mb-4 rounded-full" alt="Nightlife">
-        <h3 class="font-semibold text-lg">Nightlife</h3>
+      <div class="bg-white rounded-xl shadow-md hover:shadow-xl text-center p-6 transition duration-300">
+        <img src="https://images.pexels.com/photos/3028995/pexels-photo-3028995.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260" class="mx-auto mb-4 rounded-full w-28 h-28 object-cover border-4 border-gray-200" alt="Nightlife">
+        <h3 class="text-xl font-semibold text-gray-700">Nightlife</h3>
       </div>
-      <div class="bg-white rounded shadow p-6 text-center hover:shadow-lg transition">
-        <img src="https://source.unsplash.com/100x100/?cafe" class="mx-auto mb-4 rounded-full" alt="Cafes">
-        <h3 class="font-semibold text-lg">Cafes</h3>
+      <div class="bg-white rounded-xl shadow-md hover:shadow-xl text-center p-6 transition duration-300">
+        <img src="https://images.pexels.com/photos/206739/pexels-photo-206739.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260" class="mx-auto mb-4 rounded-full w-28 h-28 object-cover border-4 border-gray-200" alt="Cafes">
+        <h3 class="text-xl font-semibold text-gray-700">Cafes</h3>
       </div>
     </div>
   </div>
 </section>
+
+<!-- Featured Restaurants -->
+<section class="py-16 px-6 bg-white">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="text-3xl font-bold mb-10 text-center text-gray-800">Top Rated in Bihar</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+      <div class="rounded-lg overflow-hidden shadow hover:shadow-xl transition">
+        <img src="https://images.pexels.com/photos/3298633/pexels-photo-3298633.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260" alt="Litti Chokha Junction" class="w-full h-48 object-cover">
+        <div class="p-4">
+          <h3 class="text-xl font-bold">Litti Chokha Junction</h3>
+          <p class="text-gray-600">Patna, Bihar</p>
+          <p class="mt-2 font-semibold text-yellow-500">★ 4.7</p>
+        </div>
+      </div>
+      <!-- Add more restaurant cards as needed -->
+    </div>
+  </div>
+</section>
+
+<!-- App Promo Section -->
+<section class="bg-yellow-100 py-16 px-6">
+  <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between">
+    <div class="mb-10 md:mb-0 max-w-lg">
+      <h2 class="text-3xl font-bold mb-4">Bihar Bhojan App Coming Soon!</h2>
+      <p class="text-gray-700 mb-4">Order your favorite Bihari food anytime, anywhere. Coming soon on iOS & Android.</p>
+      <button class="bg-black text-white px-6 py-3 rounded hover:bg-gray-800 transition">Notify Me</button>
+    </div>
+    <img src="https://images.pexels.com/photos/6078129/pexels-photo-6078129.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260" class="w-64 md:w-80 rounded-lg shadow-lg" alt="App Preview">
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-white py-10">
+  <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-6">
+    <div>
+      <h3 class="font-bold text-xl mb-4">Bihar Bhojan</h3>
+      <p>Your destination for authentic Bihari food experiences.</p>
+    </div>
+    <div>
+      <h3 class="font-bold text-xl mb-4">Quick Links</h3>
+      <ul>
+        <li><a href="/" class="hover:underline">Home</a></li>
+        <li><a href="/restaurants" class="hover:underline">Restaurants</a></li>
+        <li><a href="#" class="hover:underline">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="font-bold text-xl mb-4">Follow Us</h3>
+      <div class="flex space-x-4">
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" class="w-6" alt="Facebook" /></a>
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733558.png" class="w-6" alt="Instagram" /></a>
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733614.png" class="w-6" alt="Twitter" /></a>
+      </div>
+    </div>
+  </div>
+  <div class="text-center mt-8 text-sm text-gray-400">
+    © 2025 Bihar Bhojan. All rights reserved.
+  </div>
+</footer>

@@ -1,15 +1,17 @@
 <div class="max-w-7xl mx-auto px-4 py-8">
 
   <!-- Add New Button -->
-  <div class="flex justify-end mb-6">
-    <%= link_to "Add New", new_restaurant_path, class: "bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg shadow-md transition" %>
-  </div>
+  <% unless current_user.role == "customer" %>
+    <div class="flex justify-end mb-6">
+      <%= link_to "Add New", new_restaurant_path, class: "bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg shadow-md transition" %>
+    </div>
+  <% end %>
 
   <!-- Page Title -->
   <h1 class="text-3xl font-extrabold mb-8 text-gray-900 tracking-wide">🍽️ Explore Restaurants</h1>
 
   <!-- Filter / Search Form -->
-  <%= form_with url: restaurants_path, method: :get, local: true, class: "bg-white p-6 rounded-xl shadow-lg grid grid-cols-1 md:grid-cols-5 gap-5 mb-10" do %>
+  <%= form_with url: customers_restaurants_path, method: :get, local: true, class: "bg-white p-6 rounded-xl shadow-lg grid grid-cols-1 md:grid-cols-5 gap-5 mb-10" do %>
     
     <input 
       type="text" 
@@ -32,7 +34,9 @@
       class="border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition w-full"
     >
       <option value="">🍽️ All Categories</option>
-      
+      <% @categories.each do |cat| %>
+        <option value="<%= cat.id %>" <%= "selected" if params[:category].to_i == cat.id %>><%= cat.name %></option>
+      <% end %>
     </select>
 
     <div class="flex space-x-3">
@@ -59,21 +63,33 @@
   <% if @restaurants.any? %>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       <% @restaurants.each do |restaurant| %>
-        <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition overflow-hidden">
-          <% if restaurant.image_url.present? %>
-            <%= image_tag restaurant.image_url, alt: restaurant.name, class: "h-52 w-full object-cover transition-transform duration-300 hover:scale-105" %>
-          <% else %>
-            <div class="h-52 w-full bg-gray-200 flex items-center justify-center text-gray-400 text-xl">
-              🍽️ No Image
-            </div>
-          <% end %>
+        <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition overflow-hidden border border-gray-200">
+          
+          <!-- Image Section -->
+          <div class="relative">
+            <% if restaurant.image_url.present? %>
+              <%= image_tag restaurant.image_url, alt: restaurant.name, class: "h-60 w-full object-cover transition-transform duration-300 hover:scale-105" %>
+            <% else %>
+              <div class="h-60 w-full bg-gray-200 flex items-center justify-center text-gray-400 text-xl">
+                🍽️ No Image
+              </div>
+            <% end %>
+          </div>
+
+          <!-- Content Section -->
           <div class="p-5">
             <h2 class="text-xl font-semibold text-gray-900 truncate"><%= restaurant.name %></h2>
-            <p class="text-gray-600 mt-2 line-clamp-3"><%= truncate(restaurant.description, length: 120) %></p>
-            <p class="text-sm text-gray-500 mt-1 flex items-center gap-1">📍 <span><%= restaurant.location %></span></p>
-            <div class="mt-5 flex justify-between items-center">
-              <%= link_to "View Details", customers_restaurant_path(restaurant), class: "text-indigo-600 font-semibold hover:underline" %>
-              
+
+            <p class="text-gray-600 mt-2 line-clamp-3">
+              <%= truncate(restaurant.description, length: 120) %>
+            </p>
+
+            <p class="text-sm text-gray-500 mt-2 flex items-center gap-1">
+              📍 <span><%= restaurant.location %></span>
+            </p>
+
+            <div class="mt-5 flex justify-end">
+              <%= link_to "View Details", customers_restaurant_path(restaurant), class: "bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg px-5 py-2 shadow transition" %>
             </div>
           </div>
         </div>

@@ -11,6 +11,7 @@ class DashboardsController < ApplicationController
   end
 
   def customer
+    @order = current_user.orders.order(created_at: :desc).first
     @restaurants = Restaurant.includes(:menu_items).order(created_at: :desc)
   end
 end

@@ -11,14 +11,14 @@
     <div class="bg-purple-50 p-4 rounded shadow hover:bg-purple-100 transition">
       <h2 class="text-lg font-semibold text-purple-700 mb-1">📦 My Orders</h2>
       <p class="text-sm text-gray-600">View your order history and re-order easily.</p>
-      <%= link_to "View Orders", customers_restaurants_path, class: "text-purple-600 hover:underline text-sm mt-2 inline-block" %>
+      <%= link_to "View Orders", orders_path, class: "text-purple-600 hover:underline text-sm mt-2 inline-block" %>
     </div>
 
     <!-- Favorite Restaurants -->
     <div class="bg-pink-50 p-4 rounded shadow hover:bg-pink-100 transition">
       <h2 class="text-lg font-semibold text-pink-700 mb-1">❤️ Favorite Restaurants</h2>
       <p class="text-sm text-gray-600">Your saved restaurants in one place.</p>
-      <%= link_to "View Favorites", "#", class: "text-pink-600 hover:underline text-sm mt-2 inline-block" %>
+      <%= link_to "View Favorites", customers_restaurants_path, class: "text-pink-600 hover:underline text-sm mt-2 inline-block" %>
     </div>
 
     <!-- Leave a Review -->
@@ -32,7 +32,7 @@
     <div class="bg-green-50 p-4 rounded shadow hover:bg-green-100 transition">
       <h2 class="text-lg font-semibold text-green-700 mb-1">🚚 Track Order</h2>
       <p class="text-sm text-gray-600">Track your current delivery status.</p>
-      <%= link_to "Track Now", "#", class: "text-green-600 hover:underline text-sm mt-2 inline-block" %>
+      <%= link_to "Track Now", track_order_path(@order), class: "text-green-600 hover:underline text-sm mt-2 inline-block" %>
     </div>
     
   </div>

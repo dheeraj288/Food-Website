@@ -1,40 +1,42 @@
-<h2 class="text-4xl font-extrabold text-gray-900 mb-12 text-center">🍴 Our Delicious Menu</h2>
+<h2 class="text-5xl font-extrabold text-gray-900 mb-16 text-center tracking-tight">
+  🍽️ Our Signature Dishes
+</h2>
 
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
   <% @restaurant.menu_items.each do |item| %>
-    <div class="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-200 hover:shadow-xl transition duration-300">
-      
+    <div class="bg-white/90 backdrop-blur-md rounded-3xl shadow-xl hover:shadow-2xl border border-gray-200 transition-all duration-300 overflow-hidden group relative">
+
       <% if item.image_url.present? %>
-        <div class="relative w-full aspect-w-4 aspect-h-3">
-          <img src="<%= item.image_url %>" alt="<%= item.name %>" class="w-full h-full object-cover">
-          <div class="absolute bottom-0 w-full bg-gradient-to-t from-black/70 to-transparent px-4 py-2 text-white">
-            <h3 class="text-lg font-semibold"><%= item.name %></h3>
-            <span class="text-sm text-indigo-200">₹<%= item.price %></span>
+        <div class="relative w-full aspect-w-4 aspect-h-3 overflow-hidden">
+          <img src="<%= item.image_url %>" alt="<%= item.name %>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute bottom-0 w-full bg-gradient-to-t from-black/80 to-transparent p-4 text-white">
+            <h3 class="text-xl font-bold"><%= item.name %></h3>
+            <span class="text-sm text-gray-300">₹<%= item.price %></span>
           </div>
         </div>
       <% else %>
-        <div class="w-full aspect-w-4 aspect-h-3 bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
+        <div class="w-full aspect-w-4 aspect-h-3 bg-gray-200 flex items-center justify-center text-gray-500 text-sm">
           No Image Available
         </div>
       <% end %>
 
-      <div class="p-5 space-y-4">
+      <div class="p-6 space-y-4">
         <div class="flex justify-between items-center">
-          <span class="inline-block bg-indigo-100 text-indigo-700 text-xs font-semibold px-3 py-1 rounded-full">
+          <span class="bg-gradient-to-r from-indigo-200 to-indigo-500 text-indigo-900 text-xs font-bold px-3 py-1 rounded-full shadow-sm">
             <%= item.dish_category.name %>
           </span>
-          <span class="text-lg font-bold text-indigo-600">₹<%= item.price %></span>
+          <span class="text-xl font-semibold text-indigo-700">₹<%= item.price %></span>
         </div>
 
-        <p class="text-gray-600 text-sm line-clamp-3">
+        <p class="text-gray-700 text-sm line-clamp-3">
           <%= item.description.to_plain_text.truncate(150) %>
         </p>
 
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-center pt-4 border-t border-gray-100">
           <%= form_with url: cart_items_path, method: :post, local: true do |f| %>
             <%= hidden_field_tag :menu_item_id, item.id %>
             <%= hidden_field_tag :restaurant_id, @restaurant.id %>
-            <%= f.submit "➕ Add to Cart", class: "text-sm bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700" %>
+            <%= f.submit "➕ Add to Cart", class: "text-sm bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition" %>
           <% end %>
 
           <div class="flex space-x-4 text-sm">
@@ -47,65 +49,57 @@
   <% end %>
 </div>
 
-<div class="mt-12 flex justify-end">
+<div class="mt-14 flex justify-end">
   <%= link_to "➕ Add New Item", new_restaurant_menu_item_path(@restaurant),
-    class: "bg-indigo-600 text-white font-semibold px-6 py-3 rounded-full shadow-md hover:bg-indigo-700 transition" %>
+    class: "bg-gradient-to-r from-indigo-500 to-indigo-700 text-white font-semibold px-6 py-3 rounded-full shadow-lg hover:opacity-90 transition" %>
 </div>
-<!-- Reviews Section -->
-<section class="mt-20">
-  <h3 class="text-3xl font-bold text-gray-900 mb-10 text-center">💬 What Our Customers Say</h3>
+<section class="mt-24">
+  <h3 class="text-4xl font-bold text-gray-900 mb-12 text-center">💬 Customer Reviews</h3>
 
   <% if @restaurant.reviews.any? %>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       <% @restaurant.reviews.each do |review| %>
-        <div class="bg-white border border-gray-100 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+        <div class="bg-white/80 border border-gray-100 rounded-2xl p-6 shadow-md hover:shadow-xl transition duration-300 backdrop-blur-md">
           <div class="flex items-center justify-between mb-4">
-            <div>
-              <div class="flex items-center space-x-2">
-                <!-- Optional avatar -->
-                <div class="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 font-bold text-sm">
-                  <%= review.user.email[0].upcase %>
-                </div>
-                <strong class="text-gray-800 text-sm">
-                  <%= review.user.email %>
-                </strong>
+            <div class="flex items-center space-x-3">
+              <div class="w-9 h-9 bg-indigo-200 rounded-full flex items-center justify-center text-indigo-700 font-bold text-sm">
+                <%= review.user.email[0].upcase %>
               </div>
-              <small class="text-gray-400 text-xs block mt-1">
-                <%= review.created_at.strftime("%b %d, %Y") %>
-              </small>
+              <div>
+                <div class="text-gray-800 font-semibold text-sm"><%= review.user.email %></div>
+                <small class="text-gray-400 text-xs"><%= review.created_at.strftime("%b %d, %Y") %></small>
+              </div>
             </div>
 
-            <% if  current_user.admin? %>
-              <%= link_to "Delete", restaurant_review_path(@restaurant, review),
-                method: :delete,
-                data: { confirm: "Are you sure?" },
-                class: "text-red-500 text-xs font-medium hover:underline" %>
+            <% if current_user.admin? %>
+              <%= link_to "Delete", restaurant_review_path(@restaurant, review), method: :delete, data: { confirm: "Are you sure?" }, class: "text-red-500 text-xs font-medium hover:underline" %>
             <% end %>
           </div>
 
-          <!-- Star Rating -->
-          <div class="text-yellow-400 text-lg mb-2">
-            <%= "★" * review.rating %><%= "☆" * (5 - review.rating) %>
+          <!-- Stars -->
+          <div class="flex mb-3 text-yellow-400 text-sm">
+            <% 5.times do |i| %>
+              <% if i < review.rating %>
+                <span>★</span>
+              <% else %>
+                <span class="text-gray-300">★</span>
+              <% end %>
+            <% end %>
           </div>
 
-          <!-- Comment -->
           <p class="text-gray-700 text-sm leading-relaxed">
             <%= review.comment %>
           </p>
 
-          <!-- Optional upvote -->
           <% if defined?(review.upvotes) %>
             <div class="mt-4 text-sm text-gray-500 flex items-center space-x-2">
-              <%= button_to "👍 #{review.upvotes || 0}",
-                upvote_restaurant_review_path(@restaurant, review),
-                method: :post,
-                class: "text-indigo-600 font-medium hover:underline" %>
+              <%= button_to "👍 #{review.upvotes || 0}", upvote_restaurant_review_path(@restaurant, review), method: :post, class: "text-indigo-600 font-medium hover:underline" %>
             </div>
           <% end %>
         </div>
       <% end %>
     </div>
   <% else %>
-    <p class="text-center text-gray-500 text-sm">No reviews yet. Be the first to leave one!</p>
+    <p class="text-center text-gray-500 text-sm mt-8">No reviews yet. Be the first to leave one!</p>
   <% end %>
 </section>

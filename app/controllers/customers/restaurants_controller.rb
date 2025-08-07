@@ -1,9 +1,13 @@
 module Customers
   class RestaurantsController < ApplicationController
     before_action :authenticate_user!
+    
     def index
-      @restaurants = Restaurant.includes(:menu_items).order(created_at: :desc)
+      @restaurants = current_user.restaurants
+      @categories = DishCategory.all
+      @restaurants = Restaurant.filtered(params)
     end
+
 
     def show
       @restaurant = Restaurant.find(params[:id])
