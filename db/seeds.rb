@@ -1,23 +1,27 @@
 require 'faker'
 require 'securerandom'
 
-puts "🌱 Seeding 50 Restaurants and Menu Items..."
+puts "🌱 Seeding User, Restaurants, and Menu Items..."
 
+# ✅ Create or find the owner user
+owner = User.find_or_create_by!(email: "dheerajkalwar866@gmail.com") do |user|
+  user.password = "password123"
+  user.password_confirmation = "password123"
+  user.role = "customer"
+  # user.confirmed_at = Time.now  # Uncomment if using Devise with confirmable
+end
+
+puts "👤 User ensured: #{owner.email}"
+
+# ✅ Destroy all existing records (order matters due to dependencies)
+OrderItem.destroy_all
+Order.destroy_all
+DeliveryBoy.destroy_all
 MenuItem.destroy_all
 Restaurant.destroy_all
 DishCategory.destroy_all
-DeliveryBoy.destroy_all
-Order.destroy_all
-OrderItem.destroy_all
 
-owner = User.find_by(email: "dheerajkalwar866@gmail.com")
-
-if owner.nil?
-  puts "⚠️  User not found. Please create the user before running the seed."
-  exit
-end
-
-# Create Dish Categories if not already present
+# ✅ Create Dish Categories if not already present
 if DishCategory.count.zero?
   %w[Starter Main Dessert Beverage].each do |cat|
     DishCategory.create!(name: cat)
@@ -43,7 +47,7 @@ def food_image_url
   FOOD_IMAGES.sample
 end
 
-# Create 50 restaurants
+# ✅ Create 50 restaurants and menu items
 50.times do |i|
   restaurant = Restaurant.create!(
     name: Faker::Restaurant.unique.name,
@@ -68,7 +72,7 @@ end
 
 puts "🎉 Done! 50 Restaurants with menu items and categories created."
 
-# ✅ Create 10 delivery boys and save them in an array
+# ✅ Create 10 delivery boys
 puts "🚴 Creating 10 Delivery Boys..."
 
 delivery_boys = Array.new(10) do
@@ -83,16 +87,15 @@ end
 
 puts "✅ 10 Delivery Boys created."
 
-# ✅ Create one order and assign one of the delivery boys
+# ✅ Create one sample order
 puts "🛒 Creating one Order..."
 
 restaurant = Restaurant.first
-user = owner
-delivery_boy = delivery_boys.sample  # Pick a random delivery boy from the array
+delivery_boy = delivery_boys.sample
 
-if user && restaurant && delivery_boy
+if owner && restaurant && delivery_boy
   order = Order.create!(
-    user: user,
+    user: owner,
     restaurant: restaurant,
     delivery_address: "Connaught Place, New Delhi",
     latitude: 28.6315,
