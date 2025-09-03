@@ -86,25 +86,3 @@ delivery_boys = Array.new(10) do
 end
 
 puts "✅ 10 Delivery Boys created."
-
-# ✅ Create one sample order
-puts "🛒 Creating one Order..."
-
-restaurant = Restaurant.first
-delivery_boy = delivery_boys.sample
-
-if owner && restaurant && delivery_boy
-  order = Order.create!(
-    user: owner,
-    restaurant: restaurant,
-    delivery_address: "Connaught Place, New Delhi",
-    latitude: 28.6315,
-    longitude: 77.2167,
-    status: "out_for_delivery",
-    delivery_boy: delivery_boy
-  )
-
-  puts "✅ Order ##{order.id} created and assigned to #{delivery_boy.name}"
-else
-  puts "⚠️  User, Restaurant, or DeliveryBoy missing — Order not created"
-end
