@@ -22,16 +22,19 @@ class ApplicationController < ActionController::Base
     redirect_to otp_verification_path(user_id: current_user.id, context: "login"), alert: "Please verify your email via OTP."
   end
 
-  def after_sign_in_path_for(resource)
-    case resource.role
-    when "admin"
-      admin_dashboard_path
-    when "restaurant_owner"
-      owner_dashboard_path
+   def after_sign_in_path_for(resource)
+    if resource.is_a?(AdminUser)
+      admin_root_path   # ActiveAdmin dashboard
     else
-      customer_dashboard_path
+      case resource.role
+      when "restaurant_owner"
+        owner_dashboard_path
+      else
+        customer_dashboard_path
+      end
     end
   end
+
 
   def admin_user?
     user_signed_in? && current_user.role == "admin"

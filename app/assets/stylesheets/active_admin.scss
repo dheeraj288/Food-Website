@@ -1,0 +1,10 @@
+@import "arctic_admin/base";
+body.active_admin {
+  .header {
+    background-color: #1d3557; // Custom header color
+  }
+
+  .status_tag {
+    background: #6090DB; // Example override
+  }
+}

@@ -108,3 +108,4 @@ if owner && restaurant && delivery_boy
 else
   puts "⚠️  User, Restaurant, or DeliveryBoy missing — Order not created"
 end
+AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
