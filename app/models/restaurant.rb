@@ -2,6 +2,7 @@ class Restaurant < ApplicationRecord
   belongs_to :user
   has_many :menu_items, dependent: :destroy
   has_many :reviews, dependent: :destroy
+  accepts_nested_attributes_for :menu_items, allow_destroy: true
 
 
   scope :search_by_name, ->(query) {
