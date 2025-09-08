@@ -75,3 +75,6 @@ gem 'stripe'
 gem 'activeadmin'
 gem 'arctic_admin'
 gem "sassc-rails"
+# Gemfile
+gem 'chartkick'
+gem 'groupdate'
