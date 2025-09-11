@@ -1,18 +1,3 @@
 
 @import "arctic_admin/base";
 
-body.active_admin {
-  .dashboard {
-    .stat-box {
-      background-color: #e0f7fa;
-      color: #00695c;
-    }
-  }
-}
-
-// Optional minimal custom styling
-.panel h3 {
-  font-size: 28px;
-  text-align: center;
-  color: #2c3e50;
-}
